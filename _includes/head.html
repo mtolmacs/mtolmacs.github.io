@@ -8,9 +8,9 @@
 
   <title>
     {% if page.title == "Home" %}
-      {{ site.title }} &middot; {{ site.tagline }}
+    {{ site.title }} &middot; {{ site.tagline }}
     {% else %}
-      {{ page.title }} &middot; {{ site.title }}
+    {{ page.title }} &middot; {{ site.title }}
     {% endif %}
   </title>
 
@@ -21,9 +21,29 @@
   <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=PT+Sans:400,400italic,700|Abril+Fatface">
 
   <!-- Icons -->
-  <link rel="apple-touch-icon-precomposed" sizes="144x144" href="{{ site.baseurl }}public/apple-touch-icon-144-precomposed.png">
-                                 <link rel="shortcut icon" href="{{ site.baseurl }}public/favicon.ico">
+  <link rel="apple-touch-icon-precomposed" sizes="144x144"
+    href="{{ site.baseurl }}public/apple-touch-icon-144-precomposed.png">
+  <link rel="shortcut icon" href="{{ site.baseurl }}public/favicon.ico">
 
   <!-- RSS -->
   <link rel="alternate" type="application/rss+xml" title="RSS" href="/atom.xml">
+
+  <!-- Social -->
+  <meta property="og:title" content="Mark’s Nook" />
+  <meta name="author" content="Mark Tolmacs" />
+  <meta property="og:locale" content="en_US" />
+  <meta name="description" content="A personal site about Rust, JavaScript, DevOps and tech in general." />
+  <meta property="og:description" content="A personal site about Rust, JavaScript, DevOps and tech in general." />
+  <link rel="canonical" href="https://lazycat.hu/" />
+  <meta property="og:url" content="https://lazycat.hu/" />
+  <meta property="og:site_name" content="Mark’s Nook" />
+  <meta property="og:type" content="website" />
+  <meta name="twitter:card" content="summary" />
+  <meta property="twitter:title" content="Mark’s Nook" />
+  <meta name="author" content="Mark Tolmacs" />
+  <meta property="og:image" content="https://avatars.githubusercontent.com/u/14922478" />
+  <meta property="twitter:image" content="https://avatars.githubusercontent.com/u/14922478" />
+  <script type="application/ld+json">
+  {"@context":"https://schema.org","@type":"WebSite","author":{"@type":"Person","name":"Mark Tolmacs"},"description":"A personal site about tech, IT and management.","headline":"Mark’s Nook","name":"Mark’s Nook","url":"https://lazycat.hu/"}
+</script>
 </head>
