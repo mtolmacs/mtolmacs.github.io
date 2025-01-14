@@ -255,7 +255,7 @@ All the translation, loading the WASM module and configuration is being taken ca
 
 If everything went well and `yarn dev` is running, the browser is open, we’ll see the alert right from the Rust code.
 
-![](public/assets/posts/2025-01-14-gentle-intro-into-webassembly-with-rust/hello-wasm-on-web.png)
+![](/public/assets/posts/2025-01-14-gentle-intro-into-webassembly-with-rust/hello-wasm-on-web.png)
 
 If you want to call your JavaScript functions in Rust, you already saw how it is done with the `alert()` JS function. One additional step is required, namely that you have to add your function to the global `window` object.
 
@@ -308,7 +308,7 @@ greet("this is TS");
 
 It should show the alert dialog with our new parameter:
 
-![](public/assets/posts/2025-01-14-gentle-intro-into-webassembly-with-rust/this-is-ts.png)
+![](/public/assets/posts/2025-01-14-gentle-intro-into-webassembly-with-rust/this-is-ts.png)
 
 For the other direction, we’re already seen with the native `alert(…)` function, just pass the string slice to the JS function and `wasm-bindgen` takes care of it.
 
@@ -447,7 +447,7 @@ To date the best option to do so is via a Google Chrome extension, [C/C++ DevToo
 
 Once you added this extension to your Chrome, restart the browser so it loads the extension proper. Next you’ll need to enable a setting in the DevTools settings panel (see the cog icon on your DevTools panel after you opened it). It’s called “_Allow DevTools to load resources, such as source maps, from remote file paths. Disabled by default for security reasons._”
 
-![](public/assets/posts/2025-01-14-gentle-intro-into-webassembly-with-rust/chrome-preferences.png)
+![](/public/assets/posts/2025-01-14-gentle-intro-into-webassembly-with-rust/chrome-preferences.png)
 
 Now the browser is ready, we need to set up the Rust side. First, make sure you have the Rust source code installed, because the stack traces most definitely will go into the Rust standard library and having a nice source view into those files will help us figuring out what’s going on much easier than without it.
 
@@ -467,7 +467,7 @@ dwarf-debug-info = true
 
 Now if you start your Vite project with `vite dev` and load it up in Chrome, then check out the DevTools console, you should see something like this:
 
-![](public/assets/posts/2025-01-14-gentle-intro-into-webassembly-with-rust/dwarf-extension.png)
+![](/public/assets/posts/2025-01-14-gentle-intro-into-webassembly-with-rust/dwarf-extension.png)
 
 This is a good sign that the Chrome extension found the debug information and loaded it into the DevTools.
 
@@ -481,13 +481,13 @@ If you open up your sources tab in DevTools, you’ll see that there is a `file:
 
 One other benefit this extension brings us is if there is a panic in our code, we will see the stack trace in console with rust file names, line numbers and character positions! Certainly helpful!
 
-![](public/assets/posts/2025-01-14-gentle-intro-into-webassembly-with-rust/resolved-exception.png)
+![](/public/assets/posts/2025-01-14-gentle-intro-into-webassembly-with-rust/resolved-exception.png)
 
 > Note: If you see an error message on the Sources tab that refers to files cannot be open, specifically when it starts with `file:///rustc/<hash>` then you need to set up a mapping to your rust sources.
 
 In case you need to map some directories from the WASM debug informatin, maybe because you built it on a remote machine and your files are in a different folder, there is a way to do it in the Chrome extension settings. Open it up and add the directory mapping from the `/rustc/<hash>/` to the absolute path of your Rust sources.
 
-![](public/assets/posts/2025-01-14-gentle-intro-into-webassembly-with-rust/extension-settings.png)
+![](/public/assets/posts/2025-01-14-gentle-intro-into-webassembly-with-rust/extension-settings.png)
 
 My mapping was `/rustc/90b35a6239c3d8bdabc530a6a0816f7ff89a0aaf` => `/home/mtolmacs/.rustup/toolchains/stable-x86_64-unknown-linux-gnu/lib/rustlib/src/rust`. Yours might be different.
 
