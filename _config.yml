@@ -15,7 +15,7 @@ title:            Mark's Nook
 tagline:          'A personal blog about technology, IT and open source.'
 description:      'Musings about Rust, TypeScript, WebAssembly, DevOps, software in general, open source, system design and curious problems others might find useful.'
 url:              https://lazycat.hu
-baseurl:          /
+baseurl:          ''
 
 author:
   name:           'Mark Tolmacs'

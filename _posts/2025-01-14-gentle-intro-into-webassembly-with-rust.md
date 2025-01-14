@@ -85,7 +85,7 @@ Let’s install the required tools and set up the project:
 8. Install `cargo-generate` to quickly scaffold our Rust project over the Vite project we created in step 2
 
 ```bash
-cargo binstall cargo-generate   # Install pre-built binary
+> cargo binstall cargo-generate   # Install pre-built binary
 ```
 
 > Note: cargo-generate needs libssl-dev (openssl) installed if you use `cargo install cargo-generate`
