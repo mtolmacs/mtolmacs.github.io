@@ -3,6 +3,8 @@ layout: post
 title: A Gentle Introduction to WebAssembly in Rust (2025 Edition)
 ---
 
+_Updated: 2025-01-17 Formatting fixes, fix `web-sys` features by adding 'console'_
+
 It’s clear [WebAssembly](https://webassembly.org/) is one of the more popular up-and-coming technologies out there. Its promise, a universal executable format, is not new. In fact it dates back to 1995 (almost thirty years ago!) with Java. Arguably, Java was successful in some areas, many enterprise software is built on Java after all, it tried for a brief time (Java Web Start) and eventually failed to ride the stellar rise of the world wide web. Microsoft .NET is a younger contender, but it arguably suffering from the same adoption challenge as Java. While it can run on most systems now, the web is still not one of them.
 
 Enter WebAssembly (or WASM for short), supported by a wide consortium of players, developed in the open and as an open standard, with the WEB as its primary platform. While it’s too early to tell if WebAssembly will be the winner we’ve been waiting for, its adoption is wide enough, the core technology is stable enough that it’s worth considering it for even professional cases. If in doubt, just consider that [Figma](https://www.figma.com), the interface design software, is [built on C++ and WebAssembly](https://www.figma.com/blog/webassembly-cut-figmas-load-time-by-3x/).
@@ -32,86 +34,62 @@ The reference implementations and the most mature WebAssembly development pipeli
 Let’s install the required tools and set up the project:
 
 1. Install yarn (or npm, or pnpm, if you don’t have it already)
-
-```bash
-> corepack enable    # I'll use corepack because I have node@20
-```
-
+   ```bash
+   > corepack enable    # I'll use corepack because I have node@20
+   ```
 2. Start a new TypeScript project called ‘wasm-on-web’ with [Vite](https://vite.dev/) (or your framework of choice, if any)
-
-```bash
-> yarn create vite wasm-on-web --template vanilla-ts
-```
-
+   ```bash
+   > yarn create vite wasm-on-web --template vanilla-ts
+   ```
 3. Commit the current state to Git because we will overwrite some files and you’ll need the old ones
-
-```bash
-> git init   # If you haven't initialized the git repo yet
-> git commit -m "Initial setup"
-```
-
-3. Install Rustup to manage your Rust installation and toolchains
-
-```bash
-> curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
-```
-
-4. Set the Rust channel to stable
-
-```bash
-> rustup default stable
-```
-
-5. Download the compilation toolchain for WASM
-
-```bash
-> rustup target add wasm32-unknown-unknown
-```
-
-6. Install some tools we’ll use during our exercise
-
-```bash
-> cargo install wasm-tools
-> cargo install wasm-opt
-> cargo install wasm-pack
-```
-
-7. Install the Bynarien toolkit for our investigations. I use brew, but on Windows you might need to [build it yourself](https://github.com/WebAssembly/wabt?tab=readme-ov-file#building-windows) or use a package manager like Scoop and use the [pre-built package from extras](https://scoop.sh/#/apps?q=wabt).
-
-```bash
-> brew install wabt
-```
-
-8. Install `cargo-generate` to quickly scaffold our Rust project over the Vite project we created in step 2
-
-```bash
-> cargo binstall cargo-generate   # Install pre-built binary
-```
-
-> Note: cargo-generate needs libssl-dev (openssl) installed if you use `cargo install cargo-generate`
-
-8. Overlay the Rust project of our TypeScript / Vite project
-
-```bash
-> cd wasm-on-web
-> yarn install
-> cargo generate              \
-        --init                \
-        --name wasm-on-web    \
-        --overwrite           \
-        --git https://github.com/rustwasm/wasm-pack-template
-```
-
-> Note: `cargo-generate` needs to overwrite some files, because it conflicts with Vite, but the only thing you need to merge is `.gitignore`. You’ll need both the original lines and the newly added ones.
-
-9. Test if everything works so far
-
-```bash
-> cargo test
-> yarn dev  # Should open a web browser
-```
-
-With `Ctrl + C` you can exit the Vite server. You can also commit it into Git now.
+   ```bash
+   > git init   # If you haven't initialized the git repo yet
+   > git commit -m "Initial setup"
+   ```
+4. Install Rustup to manage your Rust installation and toolchains
+   ```bash
+   > curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
+   ```
+5. Set the Rust channel to stable
+   ```bash
+   > rustup default stable
+   ```
+6. Download the compilation toolchain for WASM
+   ```bash
+   > rustup target add wasm32-unknown-unknown
+   ```
+7. Install some tools we’ll use during our exercise
+   ```bash
+   > cargo install wasm-tools
+   > cargo install wasm-opt
+   > cargo install wasm-pack
+   ```
+8. Install the Bynarien toolkit for our investigations. I use brew, but on Windows you might need to [build it yourself](https://github.com/WebAssembly/wabt?tab=readme-ov-file#building-windows) or use a package manager like Scoop and use the [pre-built package from extras](https://scoop.sh/#/apps?q=wabt).
+   ```bash
+   > brew install wabt
+   ```
+9. Install `cargo-generate` to quickly scaffold our Rust project over the Vite project we created in step 2
+   ```bash
+   > cargo binstall cargo-generate   # Install pre-built binary
+   ```
+   > Note: cargo-generate needs libssl-dev (openssl) installed if you use `cargo install cargo-generate`
+10. Overlay the Rust project of our TypeScript / Vite project
+    ```bash
+    > cd wasm-on-web
+    > yarn install
+    > cargo generate              \
+            --init                \
+            --name wasm-on-web    \
+            --overwrite           \
+            --git https://github.com/rustwasm/wasm-pack-template
+    ```
+    > Note: `cargo-generate` needs to overwrite some files, because it conflicts with Vite, but the only thing you need to merge is `.gitignore`. You’ll need both the original lines and the newly added ones.
+11. Test if everything works so far
+    ```bash
+    > cargo test
+    > yarn dev  # Should open a web browser
+    ```
+    With `Ctrl + C` you can exit the Vite server. You can also commit it into Git now.
 
 ## Sidenote: Publish your Rust WASM package on [npmjs.com](http://npmjs.com)
 
@@ -125,92 +103,84 @@ If your WASM code is self contained in Rust, you can build it in production mode
 ## Build and Integrate the WebAssembly Module
 
 1. We need to build the WASM module so we can import it in the TypeScript project
-
-```bash
-> wasm-pack build --dev
-```
-
+   ```bash
+   > wasm-pack build --dev
+   ```
 2. Add the WASM package to our TypeScript project
-
-```bash
-> yarn add link:./pkg
-```
-
-> Note: It is important to add our WASM package as ‘link’, otherwise when we rebuild the WASM module Vite will not pick up the new version!
-
+   ```bash
+   > yarn add link:./pkg
+   ```
+   > Note: It is important to add our WASM package as ‘link’, otherwise when we rebuild the WASM module Vite will not pick up the new version!
 3. Add the Vite plugins required to interoperate with WASM
-
-```bash
-> yarn add -D \
-    vite-plugin-wasm \
-    vite-plugin-top-level-await \
-    vite-plugin-wasm-pack-watcher
-```
-
+   ```bash
+   > yarn add -D \
+       vite-plugin-wasm \
+       vite-plugin-top-level-await \
+       vite-plugin-wasm-pack-watcher
+   ```
 4. Configure the WASM loader in Vite by creating `vite.config.dev.ts` and adding the following contents:
 
-```javascript
-import { defineConfig } from "vite";
-import wasm from "vite-plugin-wasm";
-import topLevelAwait from "vite-plugin-top-level-await";
-import wasmPackWatchPlugin from "vite-plugin-wasm-pack-watcher";
+   ```javascript
+   import { defineConfig } from "vite";
+   import wasm from "vite-plugin-wasm";
+   import topLevelAwait from "vite-plugin-top-level-await";
+   import wasmPackWatchPlugin from "vite-plugin-wasm-pack-watcher";
 
-export default defineConfig({
-  build: {
-    watch: {
-      include: ["src/**/*.ts", "src/**/*.rs"],
-    },
-  },
-  plugins: [wasmPackWatchPlugin(), wasm(), topLevelAwait()],
-});
-```
+   export default defineConfig({
+     build: {
+       watch: {
+         include: ["src/**/*.ts", "src/**/*.rs"],
+       },
+     },
+     plugins: [wasmPackWatchPlugin(), wasm(), topLevelAwait()],
+   });
+   ```
 
 5. Create the production Vite configuration file `vite.config.ts` and add the following contents:
 
-```javascript
-import { defineConfig } from "vite";
-import wasm from "vite-plugin-wasm";
-import topLevelAwait from "vite-plugin-top-level-await";
+   ```javascript
+   import { defineConfig } from "vite";
+   import wasm from "vite-plugin-wasm";
+   import topLevelAwait from "vite-plugin-top-level-await";
 
-export default defineConfig({
-  plugins: [wasm(), topLevelAwait()],
-});
-```
+   export default defineConfig({
+     plugins: [wasm(), topLevelAwait()],
+   });
+   ```
 
-> Note: We can’t use the same config file because of the watch configuration, it would hang the `vite build` command when we build for production.
+   > Note: We can’t use the same config file because of the watch configuration, it would hang the `vite build` command when we build for production. 6. Add the `npm-run-all` package as a dev dependency in preparation for the next step below:
 
-6. Add the `npm-run-all` package as a dev dependency in preparation for the next step below:
+6. Add the `npm-run-all` package to our TypeScript project to help with running the project
 
-```bash
-> yarn add -D npm-run-all
-```
+   ```bash
+     > yarn add -D npm-run-all
+   ```
 
-> Note: This is a platform-independent way to run npm scripts one after the other with the `run-s` shortcut, which makes it possible for the Windows folks to follow this tutorial without issues. Even if you don’t use Windows it’s polite to have a solution in place which works for all.
+   > Note: This is a platform-independent way to run npm scripts one after the other with the `run-s` shortcut, which makes it possible for the Windows folks to follow this tutorial without issues. Even if you don’t use Windows it’s polite to have a solution in place which works for all.
 
 7. Modify “_scripts_” section in `package.json` to call `wasm-pack` before starting Vite for all configurations, so a fresh WASM build is always ready for us at the start dev start and the final WASM module is build in release mode before vite production build happens:
 
-```json
-{
-  ...
-  "scripts": {
-    "build": "run-s wasm-pack:release tsc vite:build",
-    "dev": "run-s wasm-pack:dev vite:dev",
-    "tsc": "tsc",
-    "vite:build": "vite build",
-    "vite:dev": "vite -c vite.config.dev.ts",
-    "vite:preview": "vite preview",
-    "wasm-pack:dev": "wasm-pack build --dev",
-    "wasm-pack:release": "wasm-pack build"
-  },
-  ...
-}
-```
+   ```json
+   {
+     ...
+     "scripts": {
+       "build": "run-s wasm-pack:release tsc vite:build",
+       "dev": "run-s wasm-pack:dev vite:dev",
+       "tsc": "tsc",
+       "vite:build": "vite build",
+       "vite:dev": "vite -c vite.config.dev.ts",
+       "vite:preview": "vite preview",
+       "wasm-pack:dev": "wasm-pack build --dev",
+       "wasm-pack:release": "wasm-pack build"
+     },
+     ...
+   }
+   ```
 
 8. Start the Vite dev mode and continue with writing our Rust WASM code
-
-```bash
-> yarn dev
-```
+   ```bash
+   > yarn dev
+   ```
 
 ## Exporting and Importing in Rust
 
@@ -255,7 +225,7 @@ All the translation, loading the WASM module and configuration is being taken ca
 
 If everything went well and `yarn dev` is running, the browser is open, we’ll see the alert right from the Rust code.
 
-![](/public/assets/posts/2025-01-14-gentle-intro-into-webassembly-with-rust/hello-wasm-on-web.png)
+![](https://lazycat.hu/public/assets/posts/2025-01-14-gentle-intro-into-webassembly-with-rust/hello-wasm-on-web.png)
 
 If you want to call your JavaScript functions in Rust, you already saw how it is done with the `alert()` JS function. One additional step is required, namely that you have to add your function to the global `window` object.
 
@@ -308,7 +278,7 @@ greet("this is TS");
 
 It should show the alert dialog with our new parameter:
 
-![](/public/assets/posts/2025-01-14-gentle-intro-into-webassembly-with-rust/this-is-ts.png)
+![](https://lazycat.hu/public/assets/posts/2025-01-14-gentle-intro-into-webassembly-with-rust/this-is-ts.png)
 
 For the other direction, we’re already seen with the native `alert(…)` function, just pass the string slice to the JS function and `wasm-bindgen` takes care of it.
 
@@ -322,7 +292,7 @@ I don’t know about you but I’ve had just about enough of the alert dialog an
 [dependencies.web-sys]
 version = "0.3"
 features = [
-  "Window"
+  "Window", "console"
 ]
 ```
 
@@ -447,7 +417,7 @@ To date the best option to do so is via a Google Chrome extension, [C/C++ DevToo
 
 Once you added this extension to your Chrome, restart the browser so it loads the extension proper. Next you’ll need to enable a setting in the DevTools settings panel (see the cog icon on your DevTools panel after you opened it). It’s called “_Allow DevTools to load resources, such as source maps, from remote file paths. Disabled by default for security reasons._”
 
-![](/public/assets/posts/2025-01-14-gentle-intro-into-webassembly-with-rust/chrome-preferences.png)
+![](https://lazycat.hu/public/assets/posts/2025-01-14-gentle-intro-into-webassembly-with-rust/chrome-preferences.png)
 
 Now the browser is ready, we need to set up the Rust side. First, make sure you have the Rust source code installed, because the stack traces most definitely will go into the Rust standard library and having a nice source view into those files will help us figuring out what’s going on much easier than without it.
 
@@ -467,27 +437,27 @@ dwarf-debug-info = true
 
 Now if you start your Vite project with `vite dev` and load it up in Chrome, then check out the DevTools console, you should see something like this:
 
-![](/public/assets/posts/2025-01-14-gentle-intro-into-webassembly-with-rust/dwarf-extension.png)
+![](https://lazycat.hu/public/assets/posts/2025-01-14-gentle-intro-into-webassembly-with-rust/dwarf-extension.png)
 
 This is a good sign that the Chrome extension found the debug information and loaded it into the DevTools.
 
-> Note: If you can’t see this message and can’t debug your WASM, then check the generated \*.wasm files for DWARF debug info. Install `wasm-objdump` from HomeBrew and see if you can find “.debug\_str”, “.debug\_line” and similar custom sections in your WASM. If not, then the DWARF debug info is missing, therefore the extension has nothing to work with.
-> 
+> Note: If you can’t see this message and can’t debug your WASM, then check the generated \*.wasm files for DWARF debug info. Install `wasm-objdump` from HomeBrew and see if you can find “.debug_str”, “.debug_line” and similar custom sections in your WASM. If not, then the DWARF debug info is missing, therefore the extension has nothing to work with.
+>
 > You can also run your project with `RUST_LOG=info yarn dev` to see if the `wasm-pack` step runs `cargo build` with the `—keep-debug` parameter.
-> 
+>
 > Finally if you run `yarn dev —debug` you can see what files the browser requests from Vite and if you see it requesting `*.dwg` file(s), then the browser extension is working properly, your WASM file should be the problem.
 
 If you open up your sources tab in DevTools, you’ll see that there is a `file:///` major section previously missing. Opening it you’ll find your project directory, in it you’ll see the Rust source file, `lib.rs` loaded and available. You can now set breakpoints in it and debug like you would a JS file. You can also see the variable values, which might not be immediately useful, but often enough to figure out what’s going on.
 
 One other benefit this extension brings us is if there is a panic in our code, we will see the stack trace in console with rust file names, line numbers and character positions! Certainly helpful!
 
-![](/public/assets/posts/2025-01-14-gentle-intro-into-webassembly-with-rust/resolved-exception.png)
+![](https://lazycat.hu/public/assets/posts/2025-01-14-gentle-intro-into-webassembly-with-rust/resolved-exception.png)
 
 > Note: If you see an error message on the Sources tab that refers to files cannot be open, specifically when it starts with `file:///rustc/<hash>` then you need to set up a mapping to your rust sources.
 
 In case you need to map some directories from the WASM debug informatin, maybe because you built it on a remote machine and your files are in a different folder, there is a way to do it in the Chrome extension settings. Open it up and add the directory mapping from the `/rustc/<hash>/` to the absolute path of your Rust sources.
 
-![](/public/assets/posts/2025-01-14-gentle-intro-into-webassembly-with-rust/extension-settings.png)
+![](https://lazycat.hu/public/assets/posts/2025-01-14-gentle-intro-into-webassembly-with-rust/extension-settings.png)
 
 My mapping was `/rustc/90b35a6239c3d8bdabc530a6a0816f7ff89a0aaf` => `/home/mtolmacs/.rustup/toolchains/stable-x86_64-unknown-linux-gnu/lib/rustlib/src/rust`. Yours might be different.
 
@@ -530,24 +500,26 @@ Check if NodeJS is at least 23.
 Finally create the loader JavaScript which loads the WASM (change the `preopens` mapping to avoid any errors)
 
 ```javascript
-'use strict';
-const { readFile } = require('node:fs/promises');
-const { WASI } = require('node:wasi');
-const { argv, env } = require('node:process');
-const { join } = require('node:path');
+"use strict";
+const { readFile } = require("node:fs/promises");
+const { WASI } = require("node:wasi");
+const { argv, env } = require("node:process");
+const { join } = require("node:path");
 
 const wasi = new WASI({
-  version: 'preview1',
+  version: "preview1",
   args: argv,
   env,
   preopens: {
-    '/': '/Users/mtolmacs/Projects/wasi-example-swc/',
+    "/": "/Users/mtolmacs/Projects/wasi-example-swc/",
   },
 });
 
 (async () => {
   const wasm = await WebAssembly.compile(
-    await readFile(join(__dirname, '../target/wasm32-wasip1/debug/swc-wasi.wasm')),
+    await readFile(
+      join(__dirname, "../target/wasm32-wasip1/debug/swc-wasi.wasm")
+    )
   );
   const instance = await WebAssembly.instantiate(wasm, wasi.getImportObject());
 
