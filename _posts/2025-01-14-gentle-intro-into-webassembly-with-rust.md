@@ -3,7 +3,12 @@ layout: post
 title: A Gentle Introduction to WebAssembly in Rust (2025 Edition)
 ---
 
+> Note: If you rather watch a video, a pair-programming session can be found below walking through this article.
+> [![An introduction to WASM in Rust with Márk Tolmács](https://img.youtube.com/vi/kdHfOhBdv1E/0.jpg)](https://www.youtube.com/watch?v=kdHfOhBdv1E)
+
 _Updated: 2025-01-17 Formatting fixes, fix `web-sys` features by adding 'console'_
+
+## Overview
 
 It’s clear [WebAssembly](https://webassembly.org/) is one of the more popular up-and-coming technologies out there. Its promise, a universal executable format, is not new. In fact it dates back to 1995 (almost thirty years ago!) with Java. Arguably, Java was successful in some areas, many enterprise software is built on Java after all, it tried for a brief time (Java Web Start) and eventually failed to ride the stellar rise of the world wide web. Microsoft .NET is a younger contender, but it arguably suffering from the same adoption challenge as Java. While it can run on most systems now, the web is still not one of them.
 
