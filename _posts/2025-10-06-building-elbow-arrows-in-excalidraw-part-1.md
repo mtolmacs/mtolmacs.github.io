@@ -57,9 +57,9 @@ The intuition here is that the two right triangles created by the origin point (
 
 <img src="/public/assets/posts/2025-10-06-building-elbow-arrows-in-excalidraw-part-1/heading1.gif" width="600" />
 
-Since the 4 switchover points are exactly 90 degrees apart rotated around the origin point, it prefectly lines up with a coordiante system where the axes are 45 degrees <-> 225 degrees and 135 degrees <-> 315 degrees (basically forming an "X" shape). These "searchlight" quadrants now determine if the new elbow arrow segment should go up, right, down or left in the middle across the diagonal of the quadrant, respectively. Determining whether a point is within a given rotated quadrant is extremely simple and require only two simple trigonometric functions.
+Since the 4 switchover points are exactly 90 degrees apart rotated around the origin point, it perfectly lines up with a coordinate system where the axes are 45 degrees <-> 225 degrees and 135 degrees <-> 315 degrees (basically forming an "X" shape). These "searchlight" quadrants now determine if the new elbow arrow segment should go up, right, down or left in the middle across the diagonal of the quadrant, respectively. Determining whether a point is within a given rotated quadrant is extremely simple and require only two simple trigonometric functions.
 
-Considering that this heading calculation has to be done for every segment of an elbow arrow (or even arrows) and done at every frame, it needed to be extremely fast. It is also further optimized by only considering two quadrants (except at the arrow start poitn), since the next segment is always left or right to the previous segment, if you think about it.
+Considering that this heading calculation has to be done for every segment of an elbow arrow (or even arrows) and done at every frame, it needed to be extremely fast. It is also further optimized by only considering two quadrants (except at the arrow start point), since the next segment is always left or right to the previous segment, if you think about it.
 
 ### Results and Next Steps
 
