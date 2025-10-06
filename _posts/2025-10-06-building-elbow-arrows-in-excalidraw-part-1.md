@@ -6,8 +6,6 @@ canonical_url: 'https://plus.excalidraw.com/blog/building-elbow-arrows-part-one'
 description: 'Introducing elbow (or orthogonal) arrows for diagramming in Excalidraw was a challenge to get right. In part 1 of this technical deep-dive we explore the motivation and the first naive approach we took on this journey.'
 ---
 
-# Building Elbow Arrows in Excalidraw
-
 As you may know, Excalidraw is an online whiteboarding application that stands out from the crowd with its distinctive hand-drawn, sketchy aesthetic. Despite this (or likely for this very reason) it is loved and embraced by professionals in various verticals including IT, data analysis, engineering, sciences and much more. Their work often includes [creating diagrams conveying flows of information or processes](https://plus.excalidraw.com/use-cases/flowchart), where clarity is paramount. One of the tools they use to indicate connection between concepts or states is arrows, but straight arrows on a busy board can get clunky fast. Therefore a new type of diagramming arrow was needed.
 
 ## The Case for Elbow Arrows
