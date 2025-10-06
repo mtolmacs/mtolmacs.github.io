@@ -29,6 +29,6 @@ version:          2.1.0
 github:
   repo:           https://github.com/mtolmacs/mtolmacs.github.io
 
-plugins:          [jekyll-gist,jekyll-paginate]
+plugins:          [jekyll-gist,jekyll-paginate, jekyll-seo-tag]
 
 excerpt_separator: <!--more-->

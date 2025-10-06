@@ -2,6 +2,8 @@
 layout: post
 title: Building Elbow Arrows in Excalidraw (Part 1)
 published: hidden
+canonical_url: 'https://plus.excalidraw.com/blog/building-elbow-arrows-part-one'
+description: 'Introducing elbow (or orthogonal) arrows for diagramming in Excalidraw was a challenge to get right. In part 1 of this technical deep-dive we explore the motivation and the first naive approach we took on this journey.'
 ---
 
 # Building Elbow Arrows in Excalidraw
